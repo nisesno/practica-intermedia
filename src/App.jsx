@@ -1,9 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
   const [busqueda, setBusqueda] = useState('')
   const [series, setSeries] = useState([])
   const [favoritos, setFavoritos] = useState([])
+
+  useEffect(() => {
+    const favs = localStorage.getItem('favoritos')
+    if (favs) {
+      setFavoritos(JSON.parse(favs))
+    }
+  }, [])
 
   const buscarSeries = async () => {
     const respuesta = await fetch(`https://api.tvmaze.com/search/shows?q=${busqueda}`)
@@ -12,12 +19,15 @@ function App() {
   }
 
   const agregarFavorito = (serie) => {
-  setFavoritos([...favoritos, serie])
+  const nuevos = [...favoritos, serie]
+  setFavoritos(nuevos)
+    localStorage.setItem('favoritos', JSON.stringify(nuevos))
   }
 
   const quitarFavorito = (id) => {
     const nuevos = favoritos.filter(fav => fav.show.id != id)
     setFavoritos(nuevos)
+    localStorage.setItem('favoritos', JSON.stringify(nuevos))
   }
 
   const esFavorito = (id) => {
