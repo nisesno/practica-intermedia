@@ -45,46 +45,57 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>Buscador de Series</h1>
-      <input
-        type="text"
-        placeholder="Buscar series"
-        value={busqueda}
-        onChange={(e) => setBusqueda(e.target.value)}
-      />
-      <button onClick={buscarSeries}>Buscar</button>
 
-      <h2>Resultados</h2>
-      {series.map((item) => (
-        <div key={item.show.id}>
-          <img
-            src={item.show.image ? item.show.image.medium : 'https://via.placeholder.com/210x295'}
-            onClick={() => verDetalle(item.show.id)}
-          />
-          <h3>{item.show.name}</h3>
-          <button onClick={() => esFavorito(item.show.id) ? quitarFavorito(item.show.id) : agregarFavorito(item)}>
-            {esFavorito(item.show.id) ? '❤️' : '🤍'}
-          </button>
-        </div>
-      ))}
+      <div className="busqueda">
+        <input
+          type="text"
+          placeholder="Buscar series"
+          value={busqueda}
+          onChange={(e) => setBusqueda(e.target.value)}
+        />
+        <button onClick={buscarSeries}>Buscar</button>
+      </div>
 
-      <h2>Mis Favoritos</h2>
-      {favoritos.map((item) => (
-        <div key={item.show.id}>
-          <img
-            src={item.show.image ? item.show.image.medium : 'https://via.placeholder.com/210x295'}
-            onClick={() => verDetalle(item.show.id)}
-          />
-          <h3>{item.show.name}</h3>
-          <button onClick={() => quitarFavorito(item.show.id)}>❤️</button>
+      <div className="resultados">
+        <h2>Resultados</h2>
+        <div className="series-grid">
+          {series.map((item) => (
+            <div key={item.show.id} className="serie-card">
+              <img
+                src={item.show.image ? item.show.image.medium : 'https://via.placeholder.com/210x295'}
+                onClick={() => verDetalle(item.show.id)}
+              />
+              <h3>{item.show.name}</h3>
+              <button onClick={() => esFavorito(item.show.id) ? quitarFavorito(item.show.id) : agregarFavorito(item)}>
+                {esFavorito(item.show.id) ? '❤️' : '🤍'}
+              </button>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
+
+      <div className="favoritos">
+        <h2>Mis Favoritos</h2>
+        <div className="series-grid">
+          {favoritos.map((item) => (
+            <div key={item.show.id} className="serie-card">
+              <img
+                src={item.show.image ? item.show.image.medium : 'https://via.placeholder.com/210x295'}
+                onClick={() => verDetalle(item.show.id)}
+              />
+              <h3>{item.show.name}</h3>
+              <button onClick={() => quitarFavorito(item.show.id)}>❤️</button>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {mostrarModal && (
         <div className="modal">
           <div className="modal-contenido">
-        <button onClick={() => setMostrarModal(false)}>X</button>
+        <button className="cerrar" onClick={() => setMostrarModal(false)}>X</button>
             <h2>{serieSeleccionada.name}</h2>
             <img src={serieSeleccionada.image.medium} />
             <div dangerouslySetInnerHTML={{ __html: serieSeleccionada.summary }} />
